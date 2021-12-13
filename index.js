@@ -73,7 +73,7 @@ app.post('/register_user', ifLoggedin,
         // password encryption (using bcryptjs)
         bcrypt.hash(user_pass, 12).then((hash_pass) => {
             // INSERTING USER INTO DATABASE
-            dbConnection.execute("INSERT INTO `users`(`name`,`lastname`,`username`,`password`) VALUES(?,?,?)",[user_name,user_lastname,user_username, hash_pass])
+            dbConnection.execute("INSERT INTO `users`(`name`,`lastname`,`username`,`password`) VALUES(?,?,?,?)",[user_name,user_lastname,user_username, hash_pass])
             .then(result => {
                 res.send(`your account has been created Successfully, Now you can <a href="/">Login</a>`);
             }).catch(err => {
@@ -102,7 +102,7 @@ app.post('/register_user', ifLoggedin,
 
 // LOGIN PAGE
 app.post('/', ifLoggedin, [
-    body('user_email').custom((value) => {
+    body('login').custom((value) => {
         return dbConnection.execute('SELECT name FROM users WHERE username=?', [value])
         .then(([rows]) => {
             if(rows.length == 1){
